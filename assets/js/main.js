@@ -35,7 +35,7 @@
 		// To calculate the no. of days between two dates
 		var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
-		$('#summary').text(`I am a master of Swift and Objective-C, with ${parseInt(Difference_In_Days / 365, 10)} of experience crafting exceptional iOS applications. I turn coffee into code and lead my team to produce apps that are user-friendly, scalable, and loved by all. With a passion for making a difference through technology, I am ready to tackle any challenge and make your app dreams a reality.`)
+		$('#summary').text(`I speak Swift fluently and Objective-C casually, with ${parseInt(Difference_In_Days / 365, 10)} years of experience crafting exceptional iOS applications. I turn coffee into code and lead my team to produce apps that are user-friendly, scalable, and loved by all. With a passion for making a difference through technology, I am ready to tackle any challenge and make your app dreams a reality.`)
 	// Hack: Enable IE workarounds.
 		if (browser.name == 'ie')
 			$body.addClass('is-ie');
