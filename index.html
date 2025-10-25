@@ -1,498 +1,675 @@
-<!DOCTYPE HTML>
-<!--
-	Paradigm Shift by Pixelarity
-	pixelarity.com | hello@pixelarity.com
-	License: pixelarity.com/license
--->
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>Colin Walsh Portfolio</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<meta name="description" content="" />
-	<meta name="keywords" content="" />
-	<link rel="stylesheet" href="assets/css/main.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog - Markdown Powered Blog</title>
+    
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --text-color: #1e293b;
+            --bg-color: #ffffff;
+            --card-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --hover-bg: #f1f5f9;
+            --max-width: 1200px;
+            --article-max-width: 720px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        nav {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--text-color);
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* Container */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 1.5rem;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Blog Card */
+        .blog-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card-content {
+            padding: 1.5rem;
+        }
+
+        .blog-card-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+        }
+
+        .blog-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+        }
+
+        .blog-card p {
+            color: var(--secondary-color);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Article View */
+        .article-container {
+            max-width: var(--article-max-width);
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            display: none;
+        }
+
+        .article-header {
+            margin-bottom: 3rem;
+        }
+
+        .article-header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 2rem;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+
+        /* Markdown Content Styling */
+        .markdown-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+        }
+
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4,
+        .markdown-content h5,
+        .markdown-content h6 {
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .markdown-content h1 { font-size: 2.25rem; }
+        .markdown-content h2 { font-size: 1.875rem; }
+        .markdown-content h3 { font-size: 1.5rem; }
+        .markdown-content h4 { font-size: 1.25rem; }
+
+        .markdown-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        .markdown-content code {
+            background: var(--card-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .markdown-content pre {
+            background: #2d2d2d;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.9rem;
+            color: #f8f8f2;
+        }
+
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .markdown-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .markdown-content a:hover {
+            border-bottom-color: var(--primary-color);
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .markdown-content th,
+        .markdown-content td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background: var(--card-bg);
+            font-weight: 600;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-color);
+            color: white;
+            padding: 3rem 1.5rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--secondary-color);
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-color);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color: #f1f5f9;
+                --bg-color: #0f172a;
+                --card-bg: #1e293b;
+                --border-color: #334155;
+                --hover-bg: #334155;
+            }
+
+            header {
+                background-color: rgba(15, 23, 42, 0.95);
+            }
+
+            footer {
+                background: #020617;
+            }
+
+            .markdown-content code {
+                background: #1e293b;
+            }
+
+            .error {
+                background: #450a0a;
+                border-color: #991b1b;
+            }
+        }
+
+        /* Hide elements during navigation */
+        .view-home .article-container { display: none; }
+        .view-home .home-content { display: block; }
+        .view-article .article-container { display: block; }
+        .view-article .home-content { display: none; }
+    </style>
 </head>
+<body class="view-home">
+    <!-- Header Navigation -->
+    <header>
+        <nav>
+            <a class="logo" onclick="showHome()">MyBlog</a>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a onclick="showHome()">Home</a></li>
+                <li><a onclick="showAbout()">About</a></li>
+                <li><a href="https://github.com">GitHub</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<body class="is-preload">
+    <!-- Home Content -->
+    <div class="home-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Welcome to My Blog</h1>
+            <p>A Markdown-powered blog hosted on GitHub Pages. Write in Markdown, publish everywhere.</p>
+        </section>
 
-	<!-- Wrapper -->
-	<div id="wrapper">
+        <!-- Blog Posts Grid -->
+        <main class="container">
+            <div id="blogGrid" class="blog-grid">
+                <div class="loading">Loading blog posts...</div>
+            </div>
+        </main>
+    </div>
 
-		<!-- Intro -->
-		<section class="intro">
-			<header>
-				<h1>Colin Walsh</h1>
-				<h2>App Development Pro</h2>
-				<h3>Lead iOS Engineer</h3>
-				<p id="summary">""</p>
-				<ul class="actions">
-					<li><a href="#first" class="arrow scrolly"><span class="label">Next</span></a></li>
-				</ul>
-			</header>
-			<div class="content">
-				<span class="image fill" data-position="center"><img src="images/pic01.jpg" alt="" /></span>
-			</div>
-		</section>
+    <!-- Article Container -->
+    <article class="article-container">
+        <a class="back-button" onclick="showHome()">← Back to all posts</a>
+        <div class="article-header">
+            <h1 id="articleTitle"></h1>
+            <div class="article-meta">
+                <span id="articleDate"></span>
+                <span id="articleReadTime"></span>
+            </div>
+            <div class="article-tags" id="articleTags"></div>
+        </div>
+        <div id="articleContent" class="markdown-content"></div>
+    </article>
 
-		<!-- Section -->
-		<section id="first">
-			<header>
-				<h2>Where I've worked</h2>
-				<h3>(and where I still do)</h3>
-			</header>
-			<div class="content">
-				<h3>2021-Present</h3>
-				<p><strong>Summus Global - Lead iOS Developer</strong> As an iOS Tech Lead at Summus Global, I'm making the impossible possible by crafting code that's both beautiful and functional. In just 6 months, I designed and implemented our iOS MVP, proving my ability to turn ideas into reality. Working closely with Product, Marketing, and Leadership, I'm designing and iterating over features for our full launch this year. I'm not just a coder, but a visionary as well, having created the CI/CD pipeline for our app from scratch using Fastlane and Github Actions. With a passion for mentorship, I'm currently interviewing candidates for the team and sharing my expertise with more junior members on best practices. From coding to collaboration, I'm a pro at turning tech challenges into user-friendly, scalable apps.</p>
-				<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-				<h3>2020-2021</h3>
-				<p><strong>Penn Gaming - iOS Developer</strong> I was part of the iOS dream team and delivered top-notch features with style. I refactored the sport detail page, made custom headers that animated live scores, implemented authentication flows, reworked the signup flow, and even implemented dev tools for our team. I wasn't just a coder, but a mentor as well, sharing my knowledge of SwiftUI, MVVM, and Combine with the team. With a passion for Agile, I consistently performed at a high level, being one of the top performers in terms of ticket volume and points per ticket.</p>
-				<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-				<h3>2017-2020</h3>
-				<p><strong>Rutgers University - Mobile Application Developer</strong> A cross-platform ninja, I had 2.5
-					years of experience developing mobile applications for both iOS and Android. During my time at
-					Rutgers University, I wore multiple hats and worked on the official university apps, along with
-					creating prototypes using React Native and Flutter. With a knack for leading, I took charge of a
-					small team of student workers and collaborated with management to bring stakeholder needs to life.
-				</p>
-				<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-			</div>
-		</section>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 MyBlog. Built with Markdown and ❤️ for GitHub Pages.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.7;">Powered by marked.js</p>
+        </div>
+    </footer>
 
-		<!-- Section -->
-		<section>
-			<header>
-				<h2>Some of my skills</h2>
-			</header>
-			<div class="content">
-				<p><strong>Placeholder</strong> placeholder </p>
-				<ul class="feature-icons">
-					<li class="icon solid fa-laptop">Tech Nerd</li>
-					<li class="icon solid fa-bolt">Iterates quickly</li>
-					<li class="icon solid fa-signal">Efficient</li>
-					<li class="icon solid fa-cog">Hard working</li>
-					<li class="icon solid fa-code">Coding wizard</li>
-				</ul>
-				<p>As an iOS developer, I'm a jack-of-all-trades with a talent for crafting code that's both elegant and efficient. I'm a master of MVVM, mobile app architecture, and both Swift and Objective-C, allowing me to bring the best of both worlds to the table. With a strong focus on optimization, I ensure that my apps run smoothly and efficiently, while also delivering top-notch UI/UX design. My expertise in SwiftUI, UIKit, and UI/UX Design make me a triple threat, delivering beautiful and functional apps every time.</p>
-			</div>
-		</section>
+    <script>
+        // Blog posts configuration
+        // This will be loaded from posts.json
+        let blogPosts = [];
 
-		<!-- Section -->
-		<section>
-			<header>
-				<h2>Example side projects</h2>
-			</header>
-			<div class="content">
-				<p><strong>Integer mollis egestas</strong> nam maximus erat id euismod egestas. Pellentesque sapien ac
-					quam. Lorem ipsum dolor sit nullam.</p>
+        // Initialize marked.js options
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (Prism.languages[lang]) {
+                    return Prism.highlight(code, Prism.languages[lang], lang);
+                }
+                return code;
+            },
+            breaks: true,
+            gfm: true
+        });
 
-				<!-- Section -->
-				<section>
-					<header>
-						<h3>YARR</h3>
-						<p>As an iOS developer, I have a passion for side projects and this Reddit reader is no exception. With its beautiful design and ruthless efficiency, it's the perfect app for scrolling through your favorite subreddits. With features like pagination, asynchronous video, and a network-saving cache, I've created an app that's both user-friendly and lightning-fast. To keep network requests down, I've implemented a cache for old responses, and for expensive resources like images and videos. This Reddit reader isn't just a side project, it's a testament to my expertise in iOS development and my commitment to delivering high-quality, efficient apps.</p>
-					</header>
-					<div class="content">
-						<div class="gallery">
-							<a href="images/gallery/fulls/01.jpg" class="landscape"><img
-									src="images/gallery/thumbs/01.jpg" alt="" /></a>
-							<a href="images/gallery/fulls/02.jpg"><img src="images/gallery/thumbs/02.jpg" alt="" /></a>
-							<a href="images/gallery/fulls/03.jpg"><img src="images/gallery/thumbs/03.jpg" alt="" /></a>
-							<a href="images/gallery/fulls/04.jpg" class="landscape"><img
-									src="images/gallery/thumbs/04.jpg" alt="" /></a>
-						</div>
-					</div>
-				</section>
+        // Load blog posts from posts.json
+        async function loadPosts() {
+            try {
+                const response = await fetch('posts/posts.json');
+                if (!response.ok) {
+                    throw new Error('Could not load posts configuration');
+                }
+                blogPosts = await response.json();
+                displayBlogGrid();
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                document.getElementById('blogGrid').innerHTML = `
+                    <div class="error">
+                        <h3>Could not load blog posts</h3>
+                        <p>Make sure posts.json exists in the posts/ directory.</p>
+                    </div>
+                `;
+            }
+        }
 
-				<!-- Section -->
-				<section>
-					<header>
-						<h3>Knight Rider</h3>
-						<p>Ready to hop on board the bus and leave the hassle behind? Look no further, because I've got the perfect app for you. I've crafted a bus riding app for Rutgers University that's not only beautiful, but packed with all the features you need to get from point A to point B in style. With real-time tracking of multiple busses, live drawing of their locations, and a feature for walking to and from bus stops, this app is your one-stop shop for all things bus-related. And the best part? It's built primarily in SwiftUI, so you know you're getting a modern and sleek app that will have you riding in style.</p>
-					</header>
-					<div class="content">
-						<div class="gallery">
-							<a href="images/gallery/fulls/05.jpg" class="landscape"><img
-									src="images/gallery/thumbs/05.jpg" alt="" /></a>
-							<a href="images/gallery/fulls/06.jpg"><img src="images/gallery/thumbs/06.jpg" alt="" /></a>
-							<a href="images/gallery/fulls/07.jpg"><img src="images/gallery/thumbs/07.jpg" alt="" /></a>
-						</div>
-					</div>
-				</section>
+        // Display blog posts in grid
+        function displayBlogGrid() {
+            const grid = document.getElementById('blogGrid');
+            
+            if (blogPosts.length === 0) {
+                grid.innerHTML = `
+                    <div class="error">
+                        <h3>No blog posts found</h3>
+                        <p>Add posts to posts.json to see them here.</p>
+                    </div>
+                `;
+                return;
+            }
 
-				<!-- Section -->
-				<section>
-					<header>
-						<h3>Drawing app</h3>
-						<p>Sketch away your creativity with my latest iOS masterpiece! From smooth and seamless lines, to vibrant colors and bold strokes, this drawing app will elevate your doodles to a whole new level. And with the ability to save and load your works of art both locally and in the cloud, your masterpieces will never disappear into the ether.</p>
-					</header>
-					<div class="content">
-						<div class="gallery">
-							<a href="images/gallery/fulls/08.jpg" class="portrait"><img
-									src="images/gallery/thumbs/08.jpg" alt="" /></a>
-							<a href="images/gallery/fulls/09.jpg" class="portrait"><img
-									src="images/gallery/thumbs/09.jpg" alt="" /></a>
-							<a href="images/gallery/fulls/10.jpg" class="landscape"><img
-									src="images/gallery/thumbs/10.jpg" alt="" /></a>
-						</div>
-					</div>
-				</section>
+            grid.innerHTML = blogPosts.map(post => `
+                <div class="blog-card" onclick="loadPost('${post.file}')">
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span>${formatDate(post.date)}</span>
+                            <span>•</span>
+                            <span>${post.readTime || '5 min read'}</span>
+                        </div>
+                        <h2>${post.title}</h2>
+                        <p>${post.excerpt}</p>
+                        <a class="read-more" onclick="event.stopPropagation(); loadPost('${post.file}')">
+                            Read more →
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-			</div>
-		</section>
+        // Load and display a single post
+        async function loadPost(filename) {
+            try {
+                const response = await fetch(`posts/${filename}`);
+                if (!response.ok) {
+                    throw new Error('Could not load post');
+                }
+                
+                const markdown = await response.text();
+                const post = blogPosts.find(p => p.file === filename);
+                
+                // Parse and display the markdown
+                const htmlContent = marked.parse(markdown);
+                
+                // Update article container
+                document.getElementById('articleTitle').textContent = post.title;
+                document.getElementById('articleDate').textContent = formatDate(post.date);
+                document.getElementById('articleReadTime').textContent = post.readTime || '5 min read';
+                
+                // Add tags if available
+                const tagsContainer = document.getElementById('articleTags');
+                if (post.tags && post.tags.length > 0) {
+                    tagsContainer.innerHTML = post.tags.map(tag => 
+                        `<span class="tag">${tag}</span>`
+                    ).join('');
+                } else {
+                    tagsContainer.innerHTML = '';
+                }
+                
+                document.getElementById('articleContent').innerHTML = htmlContent;
+                
+                // Show article view
+                document.body.className = 'view-article';
+                window.scrollTo(0, 0);
+                
+                // Re-run Prism for syntax highlighting
+                Prism.highlightAll();
+                
+            } catch (error) {
+                console.error('Error loading post:', error);
+                document.getElementById('articleContent').innerHTML = `
+                    <div class="error">
+                        <h3>Could not load this post</h3>
+                        <p>The markdown file may be missing or corrupted.</p>
+                    </div>
+                `;
+            }
+        }
 
-		<!-- Section 
-		<section>
-			<header>
-				<h2>Might delete</h2>
-			</header>
-			<div class="content">
-				<p><strong>Proin tempus feugiat</strong> sed varius enim lorem ullamcorper dolore aliquam aenean ornare
-					velit lacus, ac varius enim lorem ullamcorper dolore.</p>
-				<ul class="actions">
-					<li><a href="#" class="button primary large">Get Started</a></li>
-					<li><a href="#" class="button large">Learn More</a></li>
-				</ul>
-			</div>
-		</section> -->
+        // Show home view
+        function showHome() {
+            document.body.className = 'view-home';
+            window.scrollTo(0, 0);
+        }
 
-		<!-- Elements -->
-		<!--
-					<section>
-						<header>
-							<h2>Elements</h2>
-						</header>
-						<div class="content">
+        // Show about page (you can customize this)
+        function showAbout() {
+            document.body.className = 'view-article';
+            document.getElementById('articleTitle').textContent = 'About This Blog';
+            document.getElementById('articleDate').textContent = '';
+            document.getElementById('articleReadTime').textContent = '';
+            document.getElementById('articleTags').innerHTML = '';
+            document.getElementById('articleContent').innerHTML = `
+                <p>This is a Markdown-powered blog built for GitHub Pages. It allows you to write blog posts in Markdown format and have them automatically rendered as beautiful HTML.</p>
+                <h2>Features</h2>
+                <ul>
+                    <li>Write posts in Markdown</li>
+                    <li>Automatic syntax highlighting for code blocks</li>
+                    <li>Responsive design that works on all devices</li>
+                    <li>No build process required - works directly on GitHub Pages</li>
+                    <li>Dark mode support</li>
+                </ul>
+                <h2>How to Use</h2>
+                <ol>
+                    <li>Create your blog posts as .md files in the posts/ directory</li>
+                    <li>Update posts.json with your post metadata</li>
+                    <li>Commit and push to GitHub</li>
+                    <li>Your blog is automatically updated!</li>
+                </ol>
+            `;
+            window.scrollTo(0, 0);
+        }
 
-							<section>
-								<header>
-									<h3>Text</h3>
-								</header>
-								<div class="content">
-									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
-									<hr />
-									<h2>Heading Level 2</h2>
-									<h3>Heading Level 3</h3>
-									<h4>Heading Level 4</h4>
-									<h5>Heading Level 5</h5>
-									<hr />
-									<h5>Blockquote</h5>
-									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
-									<h5>Preformatted</h5>
-									<pre><code>i = 0;
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
 
-while (!deck.isInOrder()) {
-  print 'Iteration ' + i;
-  deck.shuffle();
-  i++;
-}
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
 
-print 'Sorted in ' + i + ' iterations.';</code></pre>
-								</div>
-							</section>
-
-							<section>
-								<header>
-									<h3>Lists</h3>
-								</header>
-								<div class="content">
-
-									<h4>Unordered</h4>
-									<ul>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Sagittis adipiscing.</li>
-										<li>Felis enim feugiat.</li>
-									</ul>
-
-									<h4>Alternate</h4>
-									<ul class="alt">
-										<li>Dolor pulvinar etiam.</li>
-										<li>Sagittis adipiscing.</li>
-										<li>Felis enim feugiat.</li>
-									</ul>
-
-									<h4>Ordered</h4>
-									<ol>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Etiam vel felis viverra.</li>
-										<li>Felis enim feugiat.</li>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Etiam vel felis lorem.</li>
-										<li>Felis enim et feugiat.</li>
-									</ol>
-									<h4>Icons</h4>
-									<ul class="icons">
-										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-										<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-									</ul>
-
-									<h4>Actions</h4>
-									<ul class="actions">
-										<li><a href="#" class="button primary">Default</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-									<ul class="actions stacked">
-										<li><a href="#" class="button primary">Default</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-								</div>
-							</section>
-
-							<section>
-								<header>
-									<h3>Table</h3>
-								</header>
-								<div class="content">
-									<h4>Default</h4>
-									<div class="table-wrapper">
-										<table>
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Description</th>
-													<th>Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Item One</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Two</td>
-													<td>Vis ac commodo adipiscing arcu aliquet.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Three</td>
-													<td> Morbi faucibus arcu accumsan lorem.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Four</td>
-													<td>Vitae integer tempus condimentum.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Five</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td colspan="2"></td>
-													<td>100.00</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-
-									<h4>Alternate</h4>
-									<div class="table-wrapper">
-										<table class="alt">
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Description</th>
-													<th>Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Item One</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Two</td>
-													<td>Vis ac commodo adipiscing arcu aliquet.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Three</td>
-													<td> Morbi faucibus arcu accumsan lorem.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Four</td>
-													<td>Vitae integer tempus condimentum.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Five</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td colspan="2"></td>
-													<td>100.00</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-								</div>
-							</section>
-
-							<section>
-								<header>
-									<h3>Buttons</h3>
-								</header>
-								<div class="content">
-									<ul class="actions">
-										<li><a href="#" class="button primary">Primary</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-									<ul class="actions">
-										<li><a href="#" class="button large">Large</a></li>
-										<li><a href="#" class="button">Default</a></li>
-										<li><a href="#" class="button small">Small</a></li>
-									</ul>
-									<ul class="actions">
-										<li><a href="#" class="button primary icon solid fa-download">Icon</a></li>
-										<li><a href="#" class="button icon solid fa-download">Icon</a></li>
-									</ul>
-									<ul class="actions">
-										<li><span class="button primary disabled">Disabled</span></li>
-										<li><span class="button disabled">Disabled</span></li>
-									</ul>
-								</div>
-							</section>
-
-							<section>
-								<header>
-									<h3>Form</h3>
-								</header>
-								<div class="content">
-									<form method="post" action="#">
-										<div class="fields">
-											<div class="field half">
-												<label for="demo-name">Name</label>
-												<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
-											</div>
-											<div class="field half">
-												<label for="demo-email">Email</label>
-												<input type="email" name="demo-email" id="demo-email" value="" placeholder="jane@untitled.tld" />
-											</div>
-											<div class="field">
-												<label for="demo-category">Category</label>
-												<select name="demo-category" id="demo-category">
-													<option value="">-</option>
-													<option value="1">Manufacturing</option>
-													<option value="1">Shipping</option>
-													<option value="1">Administration</option>
-													<option value="1">Human Resources</option>
-												</select>
-											</div>
-											<div class="field half">
-												<input type="radio" id="demo-priority-low" name="demo-priority" checked>
-												<label for="demo-priority-low">Low</label>
-											</div>
-											<div class="field half">
-												<input type="radio" id="demo-priority-high" name="demo-priority">
-												<label for="demo-priority-high">High</label>
-											</div>
-											<div class="field half">
-												<input type="checkbox" id="demo-copy" name="demo-copy">
-												<label for="demo-copy">Email me a copy</label>
-											</div>
-											<div class="field half">
-												<input type="checkbox" id="demo-human" name="demo-human" checked>
-												<label for="demo-human">Not a robot</label>
-											</div>
-											<div class="field">
-												<label for="demo-message">Message</label>
-												<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-											</div>
-										</div>
-										<ul class="actions">
-											<li><input type="submit" value="Send Message" class="primary" /></li>
-											<li><input type="reset" value="Reset" /></li>
-										</ul>
-									</form>
-								</div>
-							</section>
-
-						</div>
-					</section>
-				-->
-
-		<!-- Section -->
-		<section>
-			<header>
-				<h2>Get in touch</h2>
-			</header>
-			<div class="content">
-				<p><strong>Auctor commodo</strong> interdum et malesuada fames ac ante ipsum primis in faucibus.
-					Pellentesque venenatis dolor imperdiet dolor mattis sagittis.</p>
-
-				<form action="https://public.herotofu.com/v1/6b2bd8c0-a4cd-11ed-a31e-753411848f80" method="post">
-					<div class="fields">
-						<div class="field half">
-							<input type="text" name="name" id="name" placeholder="Name" />
-						</div>
-						<div class="field half">
-							<input type="email" name="email" id="email" placeholder="Email" />
-						</div>
-						<div class="field">
-							<textarea name="message" id="message" placeholder="Message" rows="7"></textarea>
-						</div>
-					</div>
-					<ul class="actions">
-						<li><input type="submit" value="Send Message" class="button primary" /></li>
-					</ul>
-				</form>
-			</div>
-			<footer>
-				<ul class="items">
-					<li>
-						<h3>Email</h3>
-						<a href="#">colinfwalsh@gmail.com</a>
-					</li>
-					<li>
-						<h3>Phone</h3>
-						<a href="tel:2155956570">(215) 595-6570</a>
-					</li>
-					<li>
-						<h3>Location</h3>
-						<span>Somerville, NJ</span>
-					</li>
-					<li>
-						<h3>Elsewhere</h3>
-						<ul class="icons">
-							<li><a href="linkedin.com/in/colinfwalsh" class="icon brands fa-linkedin-in"><span
-										class="label">LinkedIn</span></a></li>
-							<li><a href="github.com/colinfwalsh" class="icon brands fa-github"><span
-										class="label">GitHub</span></a></li>
-							<li><a href="https://medium.com/@colinwalsh" class="icon brands fa-medium"><span
-										class="label">Medium</span></a></li>
-						</ul>
-					</li>
-				</ul>
-			</footer>
-		</section>
-
-		<!-- Copyright -->
-		<div class="copyright">&copy; Colin Walsh. All rights reserved.</div>
-
-	</div>
-
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
-
+        // Initialize the blog
+        document.addEventListener('DOMContentLoaded', loadPosts);
+    </script>
 </body>
-
 </html>

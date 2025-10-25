@@ -1,0 +1,10 @@
+[
+    {
+        "title": "Getting Started with GitHub Pages",
+        "date": "2025-10-25",
+        "excerpt": "Learn how to deploy your static website for free using GitHub Pages. This comprehensive guide covers everything from setup to custom domains.",
+        "file": "getting-started-github-pages.md",
+        "readTime": "5 min read",
+        "tags": ["GitHub", "Tutorial", "Web Development"]
+    }
+]
