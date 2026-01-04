@@ -25,4 +25,4 @@ In the coming weeks, I'll be covering topics like:
 - Why your team's "perfect" code review process might be holding you back
 - Why 100% code coverage doesn't make sense
 
-If there are specific iOS challenges you're facing or topics you'd like to see covered, feel free to reach out at [colinfwalsh@gmail.com](email:colinfwalsh@gmail.com).
+If there are specific iOS challenges you're facing or topics you'd like to see covered, feel free to reach out at [colinfwalsh@gmail.com](mailto:colinfwalsh@gmail.com).
